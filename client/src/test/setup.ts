@@ -1,4 +1,10 @@
 import '@testing-library/jest-dom';
+import { cleanup } from '@testing-library/react';
+import { afterEach } from 'vitest';
+
+afterEach(() => {
+  cleanup();
+});
 
 // Comprehensive localStorage mock for Node.js / jsdom test environments
 const localStorageMock = (() => {

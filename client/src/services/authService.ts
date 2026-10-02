@@ -102,6 +102,17 @@ class AuthService {
     }
     return data;
   }
+
+  getStoredToken(): string | null {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem('cf_access_token');
+      }
+    } catch {
+      // Storage access blocked
+    }
+    return null;
+  }
 }
 
 export const authService = new AuthService();

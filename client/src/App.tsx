@@ -13,6 +13,9 @@ import { RegisterPage } from '@/pages/public/RegisterPage';
 import { ForgotPasswordPage } from '@/pages/public/ForgotPasswordPage';
 import { ResetPasswordPage } from '@/pages/public/ResetPasswordPage';
 
+import { PublicInfluencerProfilePage } from '@/pages/public/PublicInfluencerProfilePage';
+import { PublicBrandProfilePage } from '@/pages/public/PublicBrandProfilePage';
+
 // Influencer pages
 import {
   InfluencerDashboard,
@@ -74,6 +77,8 @@ export const App: React.FC = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/influencers/:id" element={<PublicInfluencerProfilePage />} />
+          <Route path="/brands/:id" element={<PublicBrandProfilePage />} />
 
           {/* Influencer Portal Routes - Protected & Role-guarded */}
           <Route

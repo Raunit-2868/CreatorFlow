@@ -31,16 +31,10 @@ export const BrandInfluencerDiscovery: React.FC = () => (
   />
 );
 
+import { PublicInfluencerProfilePage } from '@/pages/public/PublicInfluencerProfilePage';
+
 export const BrandInfluencerDetails: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  return (
-    <PlaceholderPage
-      title={`Creator Profile #${id || 'CR-502'}`}
-      category="Influencers"
-      description="Audience demographics, verified past performance, portfolio highlights, and rate cards."
-      primaryActionLabel="Send Campaign Offer"
-    />
-  );
+  return <PublicInfluencerProfilePage />;
 };
 
 export const BrandCampaignsList: React.FC = () => (
@@ -109,13 +103,7 @@ export const BrandNotifications: React.FC = () => (
   />
 );
 
-export const BrandProfile: React.FC = () => (
-  <PlaceholderPage
-    title="Company Profile"
-    category="Company"
-    description="Brand information, industry classification, public company page, and past public campaigns."
-  />
-);
+export { BrandProfilePage as BrandProfile } from './BrandProfilePage';
 
 export const BrandSettings: React.FC = () => (
   <PlaceholderPage

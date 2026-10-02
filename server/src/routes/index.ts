@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import healthRoutes from './healthRoutes.js';
 import authRoutes from './authRoutes.js';
+import influencerRoutes from './influencerRoutes.js';
+import brandRoutes from './brandRoutes.js';
 import { authenticateToken } from '../middleware/authMiddleware.js';
 import { requireRole } from '../middleware/roleMiddleware.js';
 import { UserRole } from '../types/index.js';
@@ -25,10 +27,9 @@ const createPlaceholderRouter = (domain: string) => {
   return r;
 };
 
-// Mount all v1 routes
-router.use('/users', createPlaceholderRouter('Users'));
-router.use('/influencers', createPlaceholderRouter('Influencers'));
-router.use('/brands', createPlaceholderRouter('Brands'));
+// Profile routes
+router.use('/influencers', influencerRoutes);
+router.use('/brands', brandRoutes);
 router.use('/campaigns', createPlaceholderRouter('Campaigns'));
 router.use('/applications', createPlaceholderRouter('Applications'));
 router.use('/collaborations', createPlaceholderRouter('Collaborations'));

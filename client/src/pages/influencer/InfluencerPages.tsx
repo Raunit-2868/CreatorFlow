@@ -85,14 +85,7 @@ export const InfluencerNotifications: React.FC = () => (
   />
 );
 
-export const InfluencerProfile: React.FC = () => (
-  <PlaceholderPage
-    title="Media Kit & Profile"
-    category="Profile"
-    description="Curate your portfolio, connected social platforms, demographics, and baseline rate card."
-    primaryActionLabel="Edit Media Kit"
-  />
-);
+export { InfluencerProfilePage as InfluencerProfile } from './InfluencerProfilePage';
 
 export const InfluencerSettings: React.FC = () => (
   <PlaceholderPage
