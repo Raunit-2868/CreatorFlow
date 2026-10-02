@@ -3,6 +3,7 @@ import healthRoutes from './healthRoutes.js';
 import authRoutes from './authRoutes.js';
 import influencerRoutes from './influencerRoutes.js';
 import brandRoutes from './brandRoutes.js';
+import campaignRoutes from './campaignRoutes.js';
 import { authenticateToken } from '../middleware/authMiddleware.js';
 import { requireRole } from '../middleware/roleMiddleware.js';
 import { UserRole } from '../types/index.js';
@@ -30,7 +31,10 @@ const createPlaceholderRouter = (domain: string) => {
 // Profile routes
 router.use('/influencers', influencerRoutes);
 router.use('/brands', brandRoutes);
-router.use('/campaigns', createPlaceholderRouter('Campaigns'));
+
+// Campaign routes (Phase 4)
+router.use('/campaigns', campaignRoutes);
+
 router.use('/applications', createPlaceholderRouter('Applications'));
 router.use('/collaborations', createPlaceholderRouter('Collaborations'));
 router.use('/messages', createPlaceholderRouter('Messages'));

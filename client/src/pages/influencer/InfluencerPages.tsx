@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
 import { PlaceholderPage } from '@/pages/shared/PlaceholderPage';
 
 export const InfluencerDashboard: React.FC = () => (
@@ -18,30 +17,9 @@ export const InfluencerDashboard: React.FC = () => (
   />
 );
 
-export const InfluencerCampaignDiscovery: React.FC = () => (
-  <PlaceholderPage
-    title="Discover Campaigns"
-    category="Campaigns"
-    description="Browse active brand campaigns matching your niche, audience profile, and minimum rates."
-    stats={[
-      { label: 'Open Briefs', value: '142', icon: 'campaign' },
-      { label: 'Top AI Matches', value: '18', icon: 'sparkles' },
-      { label: 'Avg Budget', value: '$2,200', icon: 'payments' },
-    ]}
-  />
-);
-
-export const InfluencerCampaignDetails: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  return (
-    <PlaceholderPage
-      title={`Campaign Brief #${id || 'CAMP-104'}`}
-      category="Campaigns"
-      description="Deliverables schedule, target audience guidelines, moodboard, and rate proposal."
-      primaryActionLabel="Submit Proposal"
-    />
-  );
-};
+// Phase 4 — Real campaign pages
+export { InfluencerCampaignDiscoveryPage as InfluencerCampaignDiscovery } from './InfluencerCampaignDiscoveryPage';
+export { InfluencerCampaignDetailsPage as InfluencerCampaignDetails } from './InfluencerCampaignDetailsPage';
 
 export const InfluencerApplications: React.FC = () => (
   <PlaceholderPage

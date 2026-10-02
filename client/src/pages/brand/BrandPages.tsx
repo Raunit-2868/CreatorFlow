@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useParams } from 'react-router-dom';
 import { PlaceholderPage } from '@/pages/shared/PlaceholderPage';
 
 export const BrandDashboard: React.FC = () => (
@@ -37,34 +36,11 @@ export const BrandInfluencerDetails: React.FC = () => {
   return <PublicInfluencerProfilePage />;
 };
 
-export const BrandCampaignsList: React.FC = () => (
-  <PlaceholderPage
-    title="Campaign Management"
-    category="Campaigns"
-    description="Manage existing brand briefs, draft campaigns, applications, and deliverable schedules."
-    primaryActionLabel="New Campaign"
-    onPrimaryAction={() => { window.location.href = '/brand/campaigns/new'; }}
-  />
-);
-
-export const BrandCreateCampaign: React.FC = () => (
-  <PlaceholderPage
-    title="Create New Campaign"
-    category="Campaigns"
-    description="Step-by-step wizard to define brief objectives, required deliverables, target demographics, and budget."
-  />
-);
-
-export const BrandCampaignDetails: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  return (
-    <PlaceholderPage
-      title={`Campaign #${id || 'CAMP-104'}`}
-      category="Campaigns"
-      description="Review campaign performance metrics, roster of accepted creators, and incoming deliverable drafts."
-    />
-  );
-};
+// Phase 4 — Real campaign pages
+export { BrandCampaignListPage as BrandCampaignsList } from './BrandCampaignListPage';
+export { BrandCreateCampaignPage as BrandCreateCampaign } from './BrandCampaignFormPage';
+export { BrandEditCampaignPage as BrandEditCampaign } from './BrandCampaignFormPage';
+export { BrandCampaignDetailsPage as BrandCampaignDetails } from './BrandCampaignDetailsPage';
 
 export const BrandApplications: React.FC = () => (
   <PlaceholderPage

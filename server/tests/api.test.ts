@@ -21,9 +21,11 @@ describe('CreatorFlow API Foundation Tests', () => {
     expect(res.body.message).toContain('API route not found');
   });
 
-  it('GET /api/v1/campaigns returns placeholder response', async () => {
-    const res = await request(app).get('/api/v1/campaigns');
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBe(true);
+  it('POST /api/v1/campaigns without token returns 401', async () => {
+    const res = await request(app)
+      .post('/api/v1/campaigns')
+      .send({ title: 'Test', description: 'desc', category: 'Fashion', budget: 1000 });
+    expect(res.status).toBe(401);
+    expect(res.body.success).toBe(false);
   });
 });

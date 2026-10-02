@@ -36,6 +36,7 @@ import {
   BrandInfluencerDetails,
   BrandCampaignsList,
   BrandCreateCampaign,
+  BrandEditCampaign,
   BrandCampaignDetails,
   BrandApplications,
   BrandCollaborations,
@@ -118,6 +119,7 @@ export const App: React.FC = () => {
             <Route path="influencers/:id" element={<BrandInfluencerDetails />} />
             <Route path="campaigns" element={<BrandCampaignsList />} />
             <Route path="campaigns/new" element={<BrandCreateCampaign />} />
+            <Route path="campaigns/:id/edit" element={<BrandEditCampaign />} />
             <Route path="campaigns/:id" element={<BrandCampaignDetails />} />
             <Route path="applications" element={<BrandApplications />} />
             <Route path="collaborations" element={<BrandCollaborations />} />

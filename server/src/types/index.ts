@@ -117,3 +117,39 @@ export interface IBrandProfile {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export enum CampaignStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+  CLOSED = 'CLOSED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}
+
+export interface IFollowerRange {
+  min?: number;
+  max?: number;
+}
+
+export interface ICampaign {
+  _id?: string;
+  brandId: string;
+  title: string;
+  description: string;
+  category: string;
+  budget: number;
+  currency?: string;
+  targetAudience?: string;
+  location?: string;
+  requiredPlatform?: string;
+  followerRange?: IFollowerRange;
+  engagementRequirement?: number;
+  contentType?: string;
+  deliverables?: string[];
+  applicationDeadline?: Date;
+  campaignDeadline?: Date;
+  status: CampaignStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

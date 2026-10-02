@@ -111,3 +111,60 @@ export interface BrandProfile {
   updatedAt?: string;
 }
 
+
+export type CampaignStatus = 'DRAFT' | 'PUBLISHED' | 'CLOSED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+
+export interface FollowerRange {
+  min?: number;
+  max?: number | null;
+}
+
+export interface Campaign {
+  _id?: string;
+  brandId: string;
+  title: string;
+  description: string;
+  category: string;
+  budget: number;
+  currency?: string;
+  targetAudience?: string;
+  location?: string;
+  requiredPlatform?: string;
+  followerRange?: FollowerRange;
+  engagementRequirement?: number;
+  contentType?: string;
+  deliverables?: string[];
+  applicationDeadline?: string;
+  campaignDeadline?: string;
+  status: CampaignStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CampaignFilters {
+  search?: string;
+  category?: string;
+  platform?: string;
+  location?: string;
+  contentType?: string;
+  status?: CampaignStatus;
+  minBudget?: number;
+  maxBudget?: number;
+  minFollowers?: number;
+  maxFollowers?: number;
+  minEngagement?: number;
+  sortBy?: 'budget' | 'createdAt' | 'applicationDeadline' | 'title';
+  sortOrder?: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
