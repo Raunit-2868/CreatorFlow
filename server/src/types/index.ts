@@ -12,8 +12,25 @@ export interface IUser {
   role: UserRole;
   avatar?: string;
   isActive: boolean;
+  refreshToken?: string;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface JwtPayload {
+  userId: string;
+  email: string;
+  role: UserRole;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JwtPayload;
+    }
+  }
 }
 
 export interface ApiResponse<T = unknown> {

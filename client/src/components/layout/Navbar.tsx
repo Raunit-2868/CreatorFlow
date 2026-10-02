@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { UserRole } from '@/types';
 import { Dropdown } from '@/components/ui/Dropdown';
+import { useAuth } from '@/context/AuthContext';
 
 export interface NavbarProps {
   currentRole: UserRole;
@@ -15,21 +16,43 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleMobileSidebar,
   className,
 }) => {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [searchValue, setSearchValue] = React.useState('');
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+  };
+
+  const displayName = user?.name || (
+    currentRole === 'INFLUENCER'
+      ? 'Jordan Davis'
+      : currentRole === 'BRAND'
+      ? 'Nike Team'
+      : 'Admin Officer'
+  );
+
+  const initials = displayName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   const userMenuItems = [
     {
       label: 'My Profile',
       icon: 'person',
       onClick: () => {
-        window.location.href = `/${currentRole.toLowerCase()}/profile`;
+        navigate(`/${currentRole.toLowerCase()}/profile`);
       },
     },
     {
       label: 'Settings',
       icon: 'settings',
       onClick: () => {
-        window.location.href = `/${currentRole.toLowerCase()}/settings`;
+        navigate(`/${currentRole.toLowerCase()}/settings`);
       },
     },
     {
@@ -44,9 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       label: 'Sign Out',
       icon: 'logout',
       destructive: true,
-      onClick: () => {
-        window.location.href = '/login';
-      },
+      onClick: handleLogout,
     },
   ];
 
@@ -115,14 +136,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           trigger={
             <div className="flex items-center gap-2 p-1 rounded-md hover:bg-background transition-colors cursor-pointer">
               <div className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs select-none">
-                {currentRole === 'INFLUENCER' ? 'JD' : currentRole === 'BRAND' ? 'NK' : 'AD'}
+                {initials}
               </div>
-              <span className="hidden md:block text-xs font-semibold text-primary">
-                {currentRole === 'INFLUENCER'
-                  ? 'Jordan Davis'
-                  : currentRole === 'BRAND'
-                  ? 'Nike Team'
-                  : 'Admin'}
+              <span className="hidden md:block text-xs font-semibold text-primary max-w-[120px] truncate">
+                {displayName}
               </span>
               <span className="material-symbols-outlined text-secondary-text text-[18px]">
                 expand_more

@@ -1,7 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { UserRole, IUser } from '../types/index.js';
 
-export interface UserDocument extends Omit<IUser, '_id'>, Document {}
+export interface UserDocument extends Omit<IUser, '_id'>, Document {
+  comparePassword(candidatePassword: string): Promise<boolean>;
+}
 
 const UserSchema = new Schema<UserDocument>(
   {
@@ -38,12 +40,27 @@ const UserSchema = new Schema<UserDocument>(
       type: Boolean,
       default: true,
     },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
     toJSON: {
       transform: (_doc, ret) => {
         delete (ret as { passwordHash?: string }).passwordHash;
+        delete (ret as { refreshToken?: string }).refreshToken;
+        delete (ret as { resetPasswordToken?: string }).resetPasswordToken;
+        delete (ret as { resetPasswordExpires?: Date }).resetPasswordExpires;
         return ret;
       },
     },

@@ -12,7 +12,8 @@ describe('CreatorFlow Frontend Application Shell Tests', () => {
 
   it('renders sign in and registration CTAs', () => {
     render(<App />);
-    expect(screen.getByRole('button', { name: /Sign In/i })).toBeInTheDocument();
+    const signInButtons = screen.getAllByRole('button', { name: /Sign In/i });
+    expect(signInButtons.length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: /Get Started/i })).toBeInTheDocument();
   });
 });

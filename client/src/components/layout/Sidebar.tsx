@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 import { NavItem, UserRole } from '@/types';
 import { getNavItemsForRole } from '@/components/navigation/navConfig';
 
+import { useAuth } from '@/context/AuthContext';
+
 export interface SidebarProps {
   currentRole: UserRole;
   onRoleChange?: (role: UserRole) => void;
@@ -17,7 +19,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
   className,
   onCloseMobile,
 }) => {
+  const { user } = useAuth();
   const navItems: NavItem[] = getNavItemsForRole(currentRole);
+
+  const displayName = user?.name || (
+    currentRole === 'INFLUENCER'
+      ? 'Jordan Davis'
+      : currentRole === 'BRAND'
+      ? 'Nike Brand Team'
+      : 'Admin Officer'
+  );
+
+  const displayHandle = user?.email || (
+    currentRole === 'INFLUENCER'
+      ? '@jordandavis'
+      : currentRole === 'BRAND'
+      ? 'partnerships@nike.com'
+      : 'admin@creatorflow.io'
+  );
+
+  const initials = displayName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
     <aside
@@ -134,22 +160,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="flex items-center gap-3 px-1 pt-1">
           <div className="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs select-none shadow-subtle">
-            {currentRole === 'INFLUENCER' ? 'JD' : currentRole === 'BRAND' ? 'NK' : 'AD'}
+            {initials}
           </div>
           <div className="flex-1 min-w-0">
             <div className="truncate text-xs font-bold text-primary">
-              {currentRole === 'INFLUENCER'
-                ? 'Jordan Davis'
-                : currentRole === 'BRAND'
-                ? 'Nike Brand Team'
-                : 'Admin Officer'}
+              {displayName}
             </div>
             <div className="truncate text-[11px] text-secondary-text">
-              {currentRole === 'INFLUENCER'
-                ? '@jordandavis'
-                : currentRole === 'BRAND'
-                ? 'partnerships@nike.com'
-                : 'admin@creatorflow.io'}
+              {displayHandle}
             </div>
           </div>
         </div>

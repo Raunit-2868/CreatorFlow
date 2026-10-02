@@ -3,17 +3,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { Alert } from '@/components/ui/Alert';
+import { useAuth } from '@/context/AuthContext';
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [role, setRole] = React.useState<'INFLUENCER' | 'BRAND'>('INFLUENCER');
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate(`/${role.toLowerCase()}`);
+    setIsLoading(true);
+    setError(null);
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const user = await register(name, email, password, role);
+      navigate(`/${user.role.toLowerCase()}`, { replace: true });
+    } catch (err) {
+      setError((err as Error).message || 'Registration failed');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -37,6 +58,12 @@ export const RegisterPage: React.FC = () => {
             <CardDescription>Select your account type to get started</CardDescription>
           </CardHeader>
           <CardContent>
+            {error && (
+              <Alert variant="error" className="mb-4">
+                {error}
+              </Alert>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Dual Role Selector Cards */}
               <div className="grid grid-cols-2 gap-3">
@@ -101,7 +128,13 @@ export const RegisterPage: React.FC = () => {
                 required
               />
 
-              <Button type="submit" variant="primary" size="md" className="w-full mt-2">
+              <Button
+                type="submit"
+                variant="primary"
+                size="md"
+                className="w-full mt-2"
+                isLoading={isLoading}
+              >
                 Create {role === 'INFLUENCER' ? 'Creator' : 'Brand'} Account
               </Button>
             </form>

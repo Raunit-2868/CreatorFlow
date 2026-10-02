@@ -8,12 +8,25 @@ export interface NavItem {
 }
 
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   role: UserRole;
   avatar?: string;
-  title?: string;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    user: User;
+    accessToken: string;
+    refreshToken: string;
+  };
+  error?: string;
 }
 
 export interface BreadcrumbItem {

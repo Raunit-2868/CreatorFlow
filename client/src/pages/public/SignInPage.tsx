@@ -1,19 +1,39 @@
 import * as React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { Alert } from '@/components/ui/Alert';
+import { useAuth } from '@/context/AuthContext';
 
 export const SignInPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
   const [email, setEmail] = React.useState('creator@example.com');
   const [password, setPassword] = React.useState('password123');
-  const [role, setRole] = React.useState<'INFLUENCER' | 'BRAND' | 'ADMIN'>('INFLUENCER');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Redirect based on selected preview role
-    navigate(`/${role.toLowerCase()}`);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const user = await login(email, password);
+      const from = (location.state as { from?: { pathname: string } })?.from?.pathname;
+      if (from) {
+        navigate(from, { replace: true });
+      } else {
+        navigate(`/${user.role.toLowerCase()}`, { replace: true });
+      }
+    } catch (err) {
+      setError((err as Error).message || 'Invalid email or password');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -39,6 +59,12 @@ export const SignInPage: React.FC = () => {
             <CardDescription>Enter your credentials to access your dashboard</CardDescription>
           </CardHeader>
           <CardContent>
+            {error && (
+              <Alert variant="error" className="mb-4">
+                {error}
+              </Alert>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 label="Email Address"
@@ -58,41 +84,24 @@ export const SignInPage: React.FC = () => {
                 required
               />
 
-              {/* Demo Portal Role Selector */}
-              <div className="space-y-1.5 pt-1">
-                <label className="block text-xs font-semibold text-secondary-text uppercase tracking-wider">
-                  Select Portal Role (Preview)
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {(['INFLUENCER', 'BRAND', 'ADMIN'] as const).map((r) => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => setRole(r)}
-                      className={`rounded-md py-1.5 text-xs font-semibold transition-colors border ${
-                        role === r
-                          ? 'bg-primary text-white border-primary shadow-subtle'
-                          : 'bg-surface text-secondary-text border-border hover:bg-surface-hover'
-                      }`}
-                    >
-                      {r === 'INFLUENCER' ? 'Creator' : r === 'BRAND' ? 'Brand' : 'Admin'}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <div className="flex items-center justify-between text-xs pt-1">
                 <label className="flex items-center gap-2 text-secondary-text cursor-pointer">
                   <input type="checkbox" defaultChecked className="rounded border-border text-primary" />
                   Remember me
                 </label>
-                <a href="#forgot" className="font-semibold text-accent hover:underline">
+                <Link to="/forgot-password" className="font-semibold text-accent hover:underline">
                   Forgot password?
-                </a>
+                </Link>
               </div>
 
-              <Button type="submit" variant="primary" size="md" className="w-full mt-2">
-                Sign In to {role === 'INFLUENCER' ? 'Creator' : role === 'BRAND' ? 'Brand' : 'Admin'} Portal
+              <Button
+                type="submit"
+                variant="primary"
+                size="md"
+                className="w-full mt-2"
+                isLoading={isLoading}
+              >
+                Sign In
               </Button>
             </form>
           </CardContent>

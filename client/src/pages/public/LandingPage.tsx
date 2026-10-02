@@ -2,8 +2,13 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { useAuth } from '@/context/AuthContext';
 
 export const LandingPage: React.FC = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+
+  const dashboardPath = user ? `/${user.role.toLowerCase()}` : '/influencer';
+
   return (
     <div className="min-h-screen bg-background text-main-text">
       {/* Light Top Public Header */}
@@ -24,16 +29,31 @@ export const LandingPage: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link to="/login">
-            <Button variant="ghost" size="sm">
-              Sign In
-            </Button>
-          </Link>
-          <Link to="/register">
-            <Button variant="accent" size="sm">
-              Get Started
-            </Button>
-          </Link>
+          {isAuthenticated && user ? (
+            <>
+              <Link to={dashboardPath}>
+                <Button variant="primary" size="sm">
+                  Dashboard ({user.name})
+                </Button>
+              </Link>
+              <Button variant="ghost" size="sm" onClick={() => logout()}>
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button variant="accent" size="sm">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </header>
 
@@ -54,17 +74,28 @@ export const LandingPage: React.FC = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
-          <Link to="/register">
-            <Button variant="primary" size="lg" className="w-full sm:w-auto">
-              Start Free Trial
-              <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
-            </Button>
-          </Link>
-          <Link to="/influencer">
-            <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-              Explore Demo Dashboard
-            </Button>
-          </Link>
+          {isAuthenticated && user ? (
+            <Link to={dashboardPath}>
+              <Button variant="primary" size="lg" className="w-full sm:w-auto">
+                Go to {user.role === 'INFLUENCER' ? 'Creator' : user.role === 'BRAND' ? 'Brand' : 'Admin'} Dashboard
+                <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/register">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">
+                  Start Free Trial
+                  <span className="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+                  Sign In to Account
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </section>
 
