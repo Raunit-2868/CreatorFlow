@@ -4,6 +4,7 @@ import authRoutes from './authRoutes.js';
 import influencerRoutes from './influencerRoutes.js';
 import brandRoutes from './brandRoutes.js';
 import campaignRoutes from './campaignRoutes.js';
+import applicationRoutes from './applicationRoutes.js';
 import { authenticateToken } from '../middleware/authMiddleware.js';
 import { requireRole } from '../middleware/roleMiddleware.js';
 import { UserRole } from '../types/index.js';
@@ -35,7 +36,8 @@ router.use('/brands', brandRoutes);
 // Campaign routes (Phase 4)
 router.use('/campaigns', campaignRoutes);
 
-router.use('/applications', createPlaceholderRouter('Applications'));
+// Application routes (Phase 5)
+router.use('/applications', applicationRoutes);
 router.use('/collaborations', createPlaceholderRouter('Collaborations'));
 router.use('/messages', createPlaceholderRouter('Messages'));
 router.use('/notifications', createPlaceholderRouter('Notifications'));

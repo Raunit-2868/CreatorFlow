@@ -158,6 +158,12 @@ export const BrandCampaignDetailsPage: React.FC<BrandCampaignDetailsPageProps> =
 
           {showBrandActions && (
             <div className="flex flex-wrap gap-2 shrink-0">
+              <Link to={`/brand/applications?campaignId=${campaign._id}`}>
+                <Button variant="outline" size="md" className="gap-1.5">
+                  <Users className="w-4 h-4 text-[#B8955A]" />
+                  View Applicants
+                </Button>
+              </Link>
               {(campaign.status === 'DRAFT' || campaign.status === 'PUBLISHED' || campaign.status === 'CLOSED') && (
                 <Link to={`/brand/campaigns/${campaign._id}/edit`}>
                   <Button variant="outline" size="md" className="gap-1.5">

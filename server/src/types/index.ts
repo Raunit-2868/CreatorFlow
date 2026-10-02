@@ -153,3 +153,25 @@ export interface ICampaign {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export enum ApplicationStatus {
+  PENDING = 'PENDING',
+  SHORTLISTED = 'SHORTLISTED',
+  REJECTED = 'REJECTED',
+  ACCEPTED = 'ACCEPTED',
+  WITHDRAWN = 'WITHDRAWN',
+}
+
+export interface IApplication {
+  _id?: string;
+  campaignId: string;
+  influencerId: string;
+  proposal: string;
+  expectedCompensation: number;
+  contentApproach?: string;
+  portfolioLinks?: string[];
+  relevantPreviousWork?: string;
+  status: ApplicationStatus;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

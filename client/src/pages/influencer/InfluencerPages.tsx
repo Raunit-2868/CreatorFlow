@@ -21,18 +21,8 @@ export const InfluencerDashboard: React.FC = () => (
 export { InfluencerCampaignDiscoveryPage as InfluencerCampaignDiscovery } from './InfluencerCampaignDiscoveryPage';
 export { InfluencerCampaignDetailsPage as InfluencerCampaignDetails } from './InfluencerCampaignDetailsPage';
 
-export const InfluencerApplications: React.FC = () => (
-  <PlaceholderPage
-    title="My Applications"
-    category="Applications"
-    description="Track status across submitted pitches: Under Review, Shortlisted, and Accepted deals."
-    stats={[
-      { label: 'Total Submitted', value: '23', icon: 'send' },
-      { label: 'Shortlisted', value: '5', icon: 'star' },
-      { label: 'Accepted Rate', value: '38%', icon: 'check_circle' },
-    ]}
-  />
-);
+// Phase 5 — Real applications page
+export { InfluencerApplicationsPage as InfluencerApplications } from './InfluencerApplicationsPage';
 
 export const InfluencerCollaborations: React.FC = () => (
   <PlaceholderPage

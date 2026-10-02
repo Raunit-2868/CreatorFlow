@@ -42,18 +42,8 @@ export { BrandCreateCampaignPage as BrandCreateCampaign } from './BrandCampaignF
 export { BrandEditCampaignPage as BrandEditCampaign } from './BrandCampaignFormPage';
 export { BrandCampaignDetailsPage as BrandCampaignDetails } from './BrandCampaignDetailsPage';
 
-export const BrandApplications: React.FC = () => (
-  <PlaceholderPage
-    title="Applicant Review"
-    category="Applications"
-    description="Review creator pitches, check AI match scores, and shortlist or accept creators for active campaigns."
-    stats={[
-      { label: 'Pending Review', value: '34', icon: 'inbox' },
-      { label: 'Shortlisted', value: '12', icon: 'star' },
-      { label: 'Accepted Roster', value: '18', icon: 'check_circle' },
-    ]}
-  />
-);
+// Phase 5 — Real applications page
+export { BrandApplicationsPage as BrandApplications } from './BrandApplicationsPage';
 
 export const BrandCollaborations: React.FC = () => (
   <PlaceholderPage

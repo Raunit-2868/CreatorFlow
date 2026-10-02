@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { campaignService } from '@/services/campaignService';
-import { Campaign } from '@/types';
+import { applicationService } from '@/services/applicationService';
+import { Campaign, Application } from '@/types';
+import { ApplyModal } from '@/components/application/ApplyModal';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Alert } from '@/components/ui/Alert';
@@ -17,6 +19,7 @@ import {
   TrendingUp,
   Target,
   Clock,
+  CheckCircle,
 } from 'lucide-react';
 
 // ─── Detail row ───────────────────────────────────────────────────────────────
@@ -41,15 +44,24 @@ export const InfluencerCampaignDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const [existingApplication, setExistingApplication] = useState<Application | null>(null);
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
-    campaignService
-      .getCampaignById(id)
-      .then(setCampaign)
-      .catch(err => setError((err as Error).message))
+    Promise.all([
+      campaignService.getCampaignById(id),
+      applicationService.getApplications({ campaignId: id }).catch(() => ({ data: [] })),
+    ])
+      .then(([camp, apps]) => {
+        setCampaign(camp);
+        if (apps.data && apps.data.length > 0) {
+          setExistingApplication(apps.data[0]);
+        }
+      })
+      .catch((err) => setError((err as Error).message))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -99,14 +111,30 @@ export const InfluencerCampaignDetailsPage: React.FC = () => {
 
           {/* Apply / deadline CTA */}
           <div className="shrink-0 space-y-2">
-            {isOpen ? (
+            {existingApplication ? (
+              <div className="p-3 bg-[#4F765E]/10 border border-[#4F765E]/30 rounded-[10px] text-center space-y-2">
+                <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-[#4F765E] uppercase tracking-wider">
+                  <CheckCircle className="w-4 h-4" /> Application Submitted
+                </div>
+                <p className="text-xs text-[#222222]">
+                  Status: <span className="font-semibold">{existingApplication.status}</span>
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/influencer/applications')}
+                  className="w-full text-xs bg-[#FFFFFF] border-[#DDD8CE]"
+                >
+                  View in My Applications
+                </Button>
+              </div>
+            ) : isOpen ? (
               <>
                 <Button
                   variant="primary"
                   size="lg"
                   className="w-full gap-2"
-                  disabled
-                  title="Applications feature coming in Phase 5"
+                  onClick={() => setIsApplyModalOpen(true)}
                 >
                   Apply Now
                 </Button>
@@ -284,6 +312,18 @@ export const InfluencerCampaignDetailsPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {campaign && (
+        <ApplyModal
+          campaign={campaign}
+          isOpen={isApplyModalOpen}
+          onClose={() => setIsApplyModalOpen(false)}
+          onSuccess={(newApp) => {
+            setExistingApplication(newApp);
+            setIsApplyModalOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

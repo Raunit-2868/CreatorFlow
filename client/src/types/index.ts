@@ -168,3 +168,37 @@ export interface PaginatedResponse<T> {
     totalPages: number;
   };
 }
+
+export type ApplicationStatus = 'PENDING' | 'SHORTLISTED' | 'REJECTED' | 'ACCEPTED' | 'WITHDRAWN';
+
+export interface Application {
+  _id: string;
+  campaignId: string | Partial<Campaign>;
+  influencerId: string | { _id: string; name: string; email: string; role: string };
+  proposal: string;
+  expectedCompensation: number;
+  contentApproach?: string;
+  portfolioLinks?: string[];
+  relevantPreviousWork?: string;
+  status: ApplicationStatus;
+  createdAt: string;
+  updatedAt: string;
+  influencerProfile?: Partial<InfluencerProfile>;
+  brandProfile?: Partial<BrandProfile>;
+}
+
+export interface CreateApplicationDTO {
+  campaignId: string;
+  proposal: string;
+  expectedCompensation: number;
+  contentApproach?: string;
+  portfolioLinks?: string[];
+  relevantPreviousWork?: string;
+}
+
+export interface ApplicationFilters {
+  campaignId?: string;
+  status?: ApplicationStatus;
+  page?: number;
+  limit?: number;
+}
